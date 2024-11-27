@@ -1,0 +1,96 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        # Ruta para el servicio de autenticación
+        - id: authenticate
+          uri: http://localhost:8085  # URL del servicio de autenticación
+          predicates:
+            - Path=/api/authenticate/**  # Rutas que pasarán por este servicio
+          filters:
+            - RewritePath=/api/authenticate/(?<segment>.*), /auth/${segment}
+            - name: AddRequestHeader
+              args:
+                name: Access-Control-Allow-Origin
+                value: '*'
+            - name: AddRequestHeader
+              args:
+                name: Access-Control-Allow-Methods
+                value: 'GET, POST, PUT, DELETE, OPTIONS'
+            - name: AddRequestHeader
+              args:
+                name: Access-Control-Allow-Headers
+                value: 'Content-Type, Authorization'
+            - name: AddRequestHeader
+              args:
+                name: Access-Control-Allow-Credentials
+                value: 'true'
+
+        # Ruta para el servicio de productos
+        - id: product-service
+          uri: http://localhost:8089  # URL del servicio de productos
+          predicates:
+            - Path=/products/**
+          filters:
+            - name: AddRequestHeader
+              args:
+                name: Access-Control-Allow-Origin
+                value: '*'
+            - name: AddRequestHeader
+              args:
+                name: Access-Control-Allow-Methods
+                value: 'GET, POST, PUT, DELETE, OPTIONS'
+            - name: AddRequestHeader
+              args:
+                name: Access-Control-Allow-Headers
+                value: 'Content-Type, Authorization'
+            - name: AddRequestHeader
+              args:
+                name: Access-Control-Allow-Credentials
+                value: 'true'
+
+        # Ruta para el servicio de BestBuy
+        - id: bestbuy-service
+          uri: http://localhost:8090  # URL del servicio BestBuy
+          predicates:
+            - Path=/api/bestbuy/**
+          filters:
+            - name: AddRequestHeader
+              args:
+                name: Access-Control-Allow-Origin
+                value: '*'
+            - name: AddRequestHeader
+              args:
+                name: Access-Control-Allow-Methods
+                value: 'GET, POST, PUT, DELETE, OPTIONS'
+            - name: AddRequestHeader
+              args:
+                name: Access-Control-Allow-Headers
+                value: 'Content-Type, Authorization'
+            - name: AddRequestHeader
+              args:
+                name: Access-Control-Allow-Credentials
+                value: 'true'
+
+        # Ruta para el servicio de historial
+        - id: history-service
+          uri: http://localhost:8088  # URL del servicio de historial
+          predicates:
+            - Path=/api/history/**
+          filters:
+            - name: AddRequestHeader
+              args:
+                name: Access-Control-Allow-Origin
+                value: '*'
+            - name: AddRequestHeader
+              args:
+                name: Access-Control-Allow-Methods
+                value: 'GET, POST, PUT, DELETE, OPTIONS'
+            - name: AddRequestHeader
+              args:
+                name: Access-Control-Allow-Headers
+                value: 'Content-Type, Authorization'
+            - name: AddRequestHeader
+              args:
+                name: Access-Control-Allow-Credentials
+                value: 'true'
